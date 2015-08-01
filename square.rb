@@ -27,11 +27,12 @@ class Square
 
         @font.draw(@health, @true_x, @true_y, 3)
 
-        if @health > @max_health * 0.8
+        frame = calculate_cracking_frame(@health, @max_health)
+
+        if frame == 'none'
             return
         else
-            frame = @health / @max_health
-            @crack[0].draw(@true_x, @true_y, 5)
+            @crack[frame].draw(@true_x, @true_y, 5)
         end
     end
 
@@ -40,6 +41,24 @@ class Square
         if @health <= @max_health
             #die
         end
+    end
+
+    def calculate_cracking_frame(health, max_health)
+        health_percentage = health.to_f/max_health
+        if health_percentage == 1
+            return 'none'
+        elsif health_percentage >= 0.8
+            return 0
+        elsif health_percentage >= 0.6
+            return 1
+        elsif health_percentage >= 0.4
+            return 2
+        elsif health_percentage >= 0.2
+            return 3
+        elsif health_percentage >= 0
+            return 4
+        end
+        return 'none'
     end
 
 end
