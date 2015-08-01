@@ -5,7 +5,7 @@ class Game_window < Gosu::Window
         @field = Field.new(10,10)
         @font = Gosu::Font.new(30)
         @mouse = Gosu::Image.new("Mouse_crosshair-w21-h21.png")
-
+        @can_click = true
     end
 
     def update
@@ -20,4 +20,20 @@ class Game_window < Gosu::Window
         @field.draw
         @font.draw(Gosu::fps,0,0,1)
     end
+
+    def button_down(id)
+        if id == Gosu::MsLeft
+            if @can_click
+                @field.handle_click(self.mouse_x, self.mouse_y, @pickaxe)
+                @can_click = false
+            end
+        end
+    end
+
+    def button_up(id)
+        if id == Gosu::MsLeft
+            @can_click = true
+        end
+    end
+
 end

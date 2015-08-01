@@ -1,4 +1,7 @@
 class Pickaxe
+
+    attr_reader :damage
+
     def initialize
         @image = Gosu::Image.new("Pickaxe-w88-h116.png")
         @x = 0
@@ -13,6 +16,8 @@ class Pickaxe
         @initial_anchor_y = 0.9
         @anchor_x = @initial_anchor_x
         @anchor_y = @initial_anchor_y
+
+        @damage = 1
     end
 
     def draw

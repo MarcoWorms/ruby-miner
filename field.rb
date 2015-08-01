@@ -5,11 +5,14 @@ class Field
         @matrix = []
         @size_x = 0..@width
         @size_y = 0..@height
+        @square_image = Gosu::Image.new("Square-w64-h64.png")
+        @square_hover_image = Gosu::Image.new("Square_hover-w64-h64.png")
+        @square_cracks_animation = Gosu::Image::load_tiles("cracking-5frames-w64-h64.png", 64, 64)
 
         for x in @size_x
             @matrix[x] = []
             for y in @size_y
-                @matrix[x][y] = Square.new(x,y,64,64)
+                @matrix[x][y] = Square.new(x,y,64,64,@square_image,@square_hover_image,@square_cracks_animation)
             end
         end
     end
@@ -25,7 +28,6 @@ class Field
     def highlight_hover(mouse_x, mouse_y)
         grid_x = mouse_x.to_i / 64
         grid_y = mouse_y.to_i / 64
-
         for x in @size_x
             for y in @size_y
                 if x == grid_x && y == grid_y
@@ -35,32 +37,17 @@ class Field
                 end
             end
         end
-
     end
 
-end
-
-class Square
-
-    attr_accessor :mouse_is_hovering
-
-    def initialize(x, y, width, height)
-        @x = x
-        @y = y
-        @image = Gosu::Image.new("Square-w64-h64.png")
-        @hover_image = Gosu::Image.new("Square_hover-w64-h64.png")
-        @width = width
-        @height = height
-        @true_x = x * width
-        @true_y = y * height
-        @mouse_is_hovering = false
-    end
-
-    def draw
-        if @mouse_is_hovering
-            @hover_image.draw(@true_x, @true_y, 1)
-        else
-            @image.draw(@true_x, @true_y, 1)
+    def handle_click(mouse_x, mouse_y, pickaxe)
+        grid_x = mouse_x.to_i / 64
+        grid_y = mouse_y.to_i / 64
+        for x in @size_x
+            for y in @size_y
+                if x == grid_x && y == grid_y
+                    @matrix[x][y].hit(pickaxe)
+                end
+            end
         end
     end
 
