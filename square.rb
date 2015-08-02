@@ -1,6 +1,6 @@
 class Square
 
-    attr_accessor :mouse_is_hovering
+    attr_accessor :mouse_is_hovering, :health
 
     def initialize(x, y, width, height, image, hover_image, cracks_animation)
         @x = x
