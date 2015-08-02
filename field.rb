@@ -20,7 +20,8 @@ class Field
     def draw
         for x in @size_x
             for y in @size_y
-                @matrix[x][y].draw
+                square = @matrix[x][y]
+                square.draw
             end
         end
     end
@@ -30,10 +31,11 @@ class Field
         grid_y = mouse_y.to_i / 64
         for x in @size_x
             for y in @size_y
-                if x == grid_x && y == grid_y
-                    @matrix[x][y].mouse_is_hovering = true
+                square = @matrix[x][y]
+                if (x == grid_x && y == grid_y) || (x == grid_x + 1 && y == grid_y) || (x == grid_x - 1 && y == grid_y) || (x == grid_x && y == grid_y + 1) || (x == grid_x && y == grid_y - 1)
+                    square.mouse_is_hovering = true
                 else
-                    @matrix[x][y].mouse_is_hovering = false
+                    square.mouse_is_hovering = false
                 end
             end
         end
@@ -44,10 +46,19 @@ class Field
         grid_y = mouse_y.to_i / 64
         for x in @size_x
             for y in @size_y
-                if x == grid_x && y == grid_y
-                    @matrix[x][y].hit(pickaxe)
+                if @matrix[x][y].mouse_is_hovering
+                    square = @matrix[x][y]
+                    square.hit(pickaxe)
+                    check_dead(square, x, y)
                 end
             end
+        end
+    end
+
+    def check_dead(square, x, y)
+        if square.health <= 0
+            $player_inventory +=1
+            @matrix[x][y] = Square.new(x,y,64,64,@square_image,@square_hover_image,@square_cracks_animation)
         end
     end
 
