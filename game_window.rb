@@ -1,6 +1,7 @@
 class Game_window < Gosu::Window
     def initialize
         super(800,800)
+        $player_inventory = 0
         @pickaxe = Pickaxe.new
         @field = Field.new(10,10)
         @font = Gosu::Font.new(30)
@@ -18,7 +19,7 @@ class Game_window < Gosu::Window
         @mouse.draw_rot(self.mouse_x, self.mouse_y, 3, 0)
         @pickaxe.draw
         @field.draw
-        @font.draw(Gosu::fps,0,0,1)
+        @font.draw($player_inventory,0,700,1)
     end
 
     def button_down(id)
